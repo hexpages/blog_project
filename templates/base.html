@@ -1,0 +1,37 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Home Page{% endblock %}</title>
+    <meta name="description" content="" />
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
+    <meta property="og:image" content="" />
+    <meta property="og:url" content="" />
+    <link
+      rel="shortcut icon"
+      href="{% static 'img/favicon.ico' %}"
+      type="image/x-icon"
+    />
+    <link href="{% static 'src/css/output.css' %}" rel="stylesheet" />
+    <!-- Default CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  </head>
+
+  <body>
+    {% include "includes/_header.html" %}
+    <main class="flex-grow">
+      {% include "includes/_message.html" %} {% block content %} 
+      {% endblock %} {% include "includes/_newsletter.html" %}
+    </main>
+    {% include "includes/_footer.html" %}
+    <script src="{% static "src/js/header.js" %}"</script>
+  </body>
+</html>

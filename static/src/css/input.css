@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+/* Google fonts */
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap");
+
+@theme {
+  /* Font Families */
+  --font-brand: "Merriweather", sans-serif;
+  --font-title: "Open Sans", sans-serif;
+  --font-heading: "Playfair", sans-serif;
+  --font-body: "Lora", sans-serif;
+
+  /* Color Palette */
+  --color-body: oklch(1 0 0); /* White background */
+  --color-primary: oklch(0 0 0); /* Black primary text/menu/icons */
+  --color-secondary: oklch(0.15 0 0); /* Muted black for secondary text */
+  --color-header-muted: oklch(
+    0.35 0 270
+  ); /* Slate-gray for secondary headers */
+  --color-divider: oklch(0.92 0 0); /* Light gray for borders */
+  --color-hover: oklch(0.25 0 0); /* Darker gray for hover states */
+  --color-accent: oklch(0.65 0.15 250); /* Blue accent for links/buttons */
+  --color-icon: var(--color-type); /* Icons use black */
+}

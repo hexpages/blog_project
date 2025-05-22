@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+
+# Django
+*.sqlite3
+db.sqlite3
+*.log
+*.pot
+local_settings.py
+
+# Environment
+.env
+!.env.example 
+
+# Virtual environment
+.venv/
+env/
+venv/
+
+# VS Code
+.vscode/
+
+# Node.js
+node_modules/
+package-lock.json
+
+# Static files
+staticfiles/
+
+# Media files
+media/
+
+# Templates compiled (just in case)
+*.html~
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Coverage / testing
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+htmlcov/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pylint
+.pylint.d/
+
+# Git
+*.orig
+
+# Optional: ignore migrations if you regenerate them often
+# */migrations/*.py
+# */migrations/*.pyc
