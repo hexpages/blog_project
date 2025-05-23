@@ -5,5 +5,20 @@
   },
   "scripts": {
     "dev": "npx @tailwindcss/cli -i ./static/src/css/input.css -o ./static/src/css/output.css --watch"
-  }
+  },
+  "name": "blog_project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hexpages/blog_project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hexpages/blog_project/issues"
+  },
+  "homepage": "https://github.com/hexpages/blog_project#readme",
+  "description": ""
 }

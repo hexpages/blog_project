@@ -1,0 +1,43 @@
+{% if messages %}
+<div class="space-y-3 mb-6" id="messages-container">
+  {% for message in messages %}
+  <div
+    class="message flex items-start p-4 rounded-lg border-l-4 {% if message.tags == 'success' %} bg-green-50 border-green-500 text-green-700 {% elif message.tags == 'error' %} bg-red-50 border-red-500 text-red-700 {% elif message.tags == 'warning' %} bg-yellow-50 border-yellow-500 text-yellow-700 {% elif message.tags == 'info' %} bg-blue-50 border-accent text-accent {% else %} bg-gray-50 border-gray-500 text-gray-700 {% endif %}"
+    role="alert"
+  >
+    <!-- Rest of your message HTML remains the same -->
+    <div class="flex-shrink-0">
+      <!-- Your existing SVG icons -->
+    </div>
+    <div class="ml-3">
+      <p class="font-body">{{ message }}</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const messages = document.querySelectorAll(".message");
+
+    messages.forEach((message) => {
+      // Set timeout to remove message after 30 seconds (30000 milliseconds)
+      setTimeout(() => {
+        message.style.transition = "opacity 0.5s ease-out";
+        message.style.opacity = "0";
+
+        // Remove the element after fade out completes
+        setTimeout(() => {
+          message.remove();
+
+          // Remove container if no messages left
+          const container = document.getElementById("messages-container");
+          if (container && container.children.length === 0) {
+            container.remove();
+          }
+        }, 500);
+      }, 4000); // 30 seconds
+    });
+  });
+</script>
+{% endif %}

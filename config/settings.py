@@ -26,6 +26,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Apps
+    'accounts',
 
     # Third party
     'crispy_forms',
@@ -104,6 +106,15 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Authentication
+AUTH_USER_MODEL = 'accounts.CustomUser'
+AUTHENTICATION_BACKENDS = [
+    'accounts.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',  # Fallback
+]
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
@@ -143,3 +154,6 @@ PASSWORD_RESET_TIMEOUT = 86400  # 1 day in seconds
 # Media file configuration
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Security settings
+PASSWORD_RESET_TIMEOUT = 3600  # 1 hour for password reset token
