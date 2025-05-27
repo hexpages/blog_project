@@ -46,7 +46,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this
     "django_browser_reload.middleware.BrowserReloadMiddleware", #related to django_browser_reload
 ]
 
@@ -232,7 +232,7 @@ CKEDITOR_5_CONFIGS = {
         },
     },
 }
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # File upload settings
 CKEDITOR_5_UPLOAD_PATH = 'uploads/'
 CKEDITOR_5_ALLOWED_FILE_TYPES = ['jpg', 'jpeg', 'png', 'gif']
