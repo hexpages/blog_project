@@ -9,6 +9,7 @@ urlpatterns = [
     path('', include('blog.urls')),
     path('accounts/', include('accounts.urls')),
     path("__reload__/", include("django_browser_reload.urls")), # django-browser-reload
+    path('ckeditor5/', include('django_ckeditor_5.urls')),  # CKEditor 5 upload URLs
 ]
 
 if settings.DEBUG:

@@ -6,6 +6,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
+from django_ckeditor_5.fields import CKEditor5Field
 
 class Category(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -48,7 +49,7 @@ class Blog(models.Model):
     )
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
     excerpt = models.CharField(max_length=300, blank=True)
-    content = models.TextField()
+    content = CKEditor5Field()  # Updated to CKEditor 5 field
     featured_image = models.ImageField(
         upload_to='blog_images/%Y/%m/',
         blank=True,
