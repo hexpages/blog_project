@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Apps
     'accounts',
+    'blog',
 
     # Third party
     'crispy_forms',
@@ -60,6 +61,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # ✅ Add your custom one here
+                'blog.context_processors.categories_context',
             ],
         },
     },
@@ -148,7 +151,7 @@ SITE_URL = env('SITE_URL')
 SITE_ID = 1
 
 # Token Expiry
-PASSWORD_RESET_TIMEOUT = 86400  # 1 day in seconds
+PASSWORD_RESET_TIMEOUT = 3600  # 1 hour for password reset token
 
 
 # Media file configuration
@@ -156,4 +159,3 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Security settings
-PASSWORD_RESET_TIMEOUT = 3600  # 1 hour for password reset token

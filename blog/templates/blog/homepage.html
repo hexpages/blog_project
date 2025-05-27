@@ -1,0 +1,122 @@
+{% extends "base.html" %} {% block content %}
+<main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
+  <!-- Hero Featured Post -->
+  <section class="mb-12 border-b border-gray-200 pb-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2">
+        {% if latest_featured %}
+        <a href="{% url 'blog_post' latest_featured.slug %}">
+          <img
+            src="{% if latest_featured.featured_image %}{{ latest_featured.featured_image.url }}{% else %}https://source.unsplash.com/random/1200x600/?technology{% endif %}"
+            alt="{{ latest_featured.title }}"
+            class="w-full h-80 object-cover mb-4"
+          />
+        </a>
+        <div class="flex items-center mb-3 space-x-3">
+          <span class="text-gray-500 text-xs uppercase tracking-wide">
+            {{ latest_featured.category.name }}
+          </span>
+          <span class="text-gray-500 text-xs">
+            {{ latest_featured.created_at|date:"F j, Y" }}
+          </span>
+        </div>
+        <h1
+          class="text-3xl font-serif font-bold text-gray-900 mb-3 leading-tight"
+        >
+          <a
+            href="{% url 'blog_post' latest_featured.slug %}"
+            class="hover:text-blue-700"
+          >
+            {{ latest_featured.title }}
+          </a>
+        </h1>
+        <p class="text-gray-600 text-base mb-4 leading-relaxed">
+          {{ latest_featured.excerpt }}
+        </p>
+
+        {% else %}
+        <p class="text-gray-600 text-base">No featured post available.</p>
+        {% endif %}
+      </div>
+      <div class="lg:col-span-1 hidden lg:block">
+        <h2 class="text-xl font-serif font-bold text-gray-900 mb-4">
+          Top Stories
+        </h2>
+        <ul class="space-y-4">
+          {% for story in top_stories %}
+          <li>
+            <a
+              href="{% url 'blog_post' story.slug %}"
+              class="text-gray-900 hover:text-blue-700 text-base font-medium"
+            >
+              {{ story.title }}
+            </a>
+            <p class="text-gray-500 text-xs">
+              {{ story.created_at|date:"F j, Y" }}
+            </p>
+          </li>
+          {% empty %}
+          <li>
+            <p class="text-gray-600 text-sm">No top stories available.</p>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Sections -->
+  {% for category, posts in category_posts.items %}
+  <section class="mb-12">
+    <div
+      class="flex justify-between items-center mb-6 border-b border-gray-200 pb-2"
+    >
+      <h2 class="text-2xl font-serif font-bold text-gray-900">
+        {{ category.name }}
+      </h2>
+      <a
+        href="{% url 'category_posts' category.slug %}"
+        class="text-blue-700 hover:text-blue-900 text-sm font-medium"
+      >
+        More in {{ category.name }}
+      </a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {% for post in posts %}
+      <article>
+        <a href="{% url 'blog_post' post.slug %}">
+          <img
+            src="{% if post.featured_image %}{{ post.featured_image.url }}{% else %}https://source.unsplash.com/random/400x300/?{{ category.slug }}{% endif %}"
+            alt="{{ post.title }}"
+            class="w-full h-40 object-cover mb-3"
+          />
+        </a>
+        <div class="flex items-center mb-2 space-x-2">
+          <span class="text-gray-500 text-xs uppercase tracking-wide">
+            {{ post.category.name }}
+          </span>
+          <span class="text-gray-500 text-xs">
+            {{ post.created_at|date:"F j, Y" }}
+          </span>
+        </div>
+        <h3
+          class="text-lg font-serif font-bold text-gray-900 mb-2 leading-snug"
+        >
+          <a href="{% url 'blog_post' post.slug %}" class="hover:text-blue-700">
+            {{ post.title }}
+          </a>
+        </h3>
+        <p class="text-gray-600 text-sm line-clamp-2">{{ post.excerpt }}</p>
+      </article>
+      {% empty %}
+      <p class="text-gray-600 text-sm">No posts available in this category.</p>
+      {% endfor %}
+    </div>
+  </section>
+  {% empty %}
+  <p class="text-gray-600 text-base">No categories or posts available.</p>
+  {% endfor %}
+  
+</main>
+    
+{% endblock %}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>New Blog Post</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+
+    .email-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    a {
+      color: #1a0dab;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <h2>{{ post.title }}</h2>
+    <p>Hello {{ subscriber.email }},</p>
+    <p>{{ post.excerpt }}</p>
+    <p><a href="{{ post_url }}">Read the full post</a></p>
+    {% if unsubscribe_url %}
+      <p><a href="{{ unsubscribe_url }}">Unsubscribe</a></p>
+    {% endif %}
+  </div>
+</body>
+</html>

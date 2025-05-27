@@ -12,13 +12,15 @@
 
     <!-- Search Box (Desktop) -->
     <div class="hidden md:flex flex-1 max-w-md mx-6">
-      <div class="relative w-full">
+      <form action="{% url 'blog_search' %}" method="get" class="relative w-full">
         <input
           type="text"
-          placeholder="Search products..."
+          name="q"
+          placeholder="Search here..."
           class="w-full py-2 px-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+          value="{{ request.GET.q }}"
         />
-        <button class="absolute right-3 top-1/2 transform -translate-y-1/2">
+        <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-5 w-5 text-gray-400"
@@ -34,7 +36,7 @@
             />
           </svg>
         </button>
-      </div>
+      </form>
     </div>
 
     <!-- Right Icons -->
@@ -149,13 +151,15 @@
 
   <!-- Search Box (Mobile - Hidden by default) -->
   <div id="mobile-search" class="hidden md:hidden px-4 pb-3">
-    <div class="relative w-full">
+    <form action="{% url 'blog_search' %}" method="get" class="relative w-full">
       <input
         type="text"
-        placeholder="Search products..."
+        name="q"
+        placeholder="Search here..."
         class="w-full py-2 px-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+        value="{{ request.GET.q }}"
       />
-      <button class="absolute right-3 top-1/2 transform -translate-y-1/2">
+      <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-5 w-5 text-gray-400"
@@ -171,38 +175,20 @@
           />
         </svg>
       </button>
-    </div>
+    </form>
   </div>
 
   <!-- Navigation (Desktop) -->
   <nav class="hidden md:block border-t border-gray-100">
     <div class="container mx-auto px-4">
       <div class="flex justify-center space-x-8 py-3">
+        {% for category in categories %}
         <a
-          href="#"
+          href="{% url 'category_posts' category.slug %}"
           class="text-gray-700 font-heading hover:text-primary font-medium"
-          >Home</a
+          >{{category.name}}</a
         >
-        <a
-          href="#"
-          class="text-gray-700 font-heading hover:text-primary font-medium"
-          >Men</a
-        >
-        <a
-          href="#"
-          class="text-gray-700 font-heading hover:text-primary font-medium"
-          >Women</a
-        >
-        <a
-          href="#"
-          class="text-gray-700 font-heading hover:text-primary font-medium"
-          >Kids</a
-        >
-        <a
-          href="#"
-          class="text-gray-700 font-heading hover:text-primary font-medium"
-          >Sale</a
-        >
+        {% endfor %}
       </div>
     </div>
   </nav>
@@ -212,32 +198,14 @@
     id="mobile-menu"
     class="hidden md:hidden bg-white border-t border-gray-100"
   >
+    {% for category in categories %}
     <div class="container mx-auto px-4 py-2">
       <a
-        href="#"
-        class="block py-2 text-gray-700 font-heading hover:text-primary"
-        >Home</a
-      >
-      <a
-        href="#"
-        class="block py-2 text-gray-700 font-heading hover:text-primary"
-        >Men</a
-      >
-      <a
-        href="#"
-        class="block py-2 text-gray-700 font-heading hover:text-primary"
-        >Women</a
-      >
-      <a
-        href="#"
-        class="block py-2 text-gray-700 font-heading hover:text-primary"
-        >Kids</a
-      >
-      <a
-        href="#"
-        class="block py-2 text-gray-700 font-heading hover:text-primary"
-        >Sale</a
+        href="{% url 'category_posts' category.slug %}"
+        class="text-gray-700 font-heading hover:text-primary font-medium"
+        >{{category.name}}</a
       >
     </div>
+    {% endfor %}
   </div>
 </header>

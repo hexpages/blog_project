@@ -36,7 +36,7 @@ def signup_view(request):
                 settings.DEFAULT_FROM_EMAIL,
                 [user.email],
                 fail_silently=False,
-                html_message=f'''
+                html_message=f'''  
                 <h2>Email Verification</h2>
                 <p>Click below to verify your email:</p>
                 <a href="{verification_link}">Verify Email</a>
@@ -94,7 +94,7 @@ def login_view(request):
             else:
                 messages.error(request, 'Invalid email or password.')
         else:
-            messages.error(request, 'Please correct the errors below.')
+            messages.error(request, 'Invalid password!')
     else:
         form = LoginForm()
     return render(request, 'accounts/login.html', {'form': form})

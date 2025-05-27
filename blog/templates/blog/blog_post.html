@@ -1,0 +1,190 @@
+{% extends "base.html" %} {% block content %}
+<main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-5xl">
+  <!-- Article Header -->
+  <article class="mb-12 border-b border-gray-200 pb-8">
+    <div class="flex items-center mb-4 space-x-3">
+      <span class="text-gray-500 text-xs uppercase tracking-wide">
+        {{ post.category.name }}
+      </span>
+      <span class="text-gray-500 text-xs">
+        {{ post.created_at|date:"F d, Y" }}
+      </span>
+    </div>
+    <h1 class="text-4xl font-serif font-bold text-gray-900 mb-4 leading-tight">
+      {{ post.title }}
+    </h1>
+    <p class="text-gray-600 text-lg mb-6 leading-relaxed">{{ post.excerpt }}</p>
+    <div class="flex items-center text-gray-500 text-sm mb-6">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4 mr-1"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.5"
+          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+        />
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.5"
+          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+        />
+      </svg>
+      <span>{{ post.views_count }} views</span>
+    </div>
+    {% if post.featured_image %}
+    <img
+      src="{{ post.featured_image.url }}"
+      alt="{{ post.title }}"
+      class="w-full h-96 object-cover mb-6"
+    />
+    {% else %}
+    <img
+      src="https://source.unsplash.com/random/1200x600/?{{ post.category.name|slugify }}"
+      alt="{{ post.title }}"
+      class="w-full h-96 object-cover mb-6"
+    />
+    {% endif %}
+  </article>
+
+  <!-- Article Content -->
+  <section class="prose prose-lg prose-gray max-w-none mb-12">
+    {{ post.content|safe }}
+  </section>
+
+  <!-- Comment Section -->
+  <section class="mb-12">
+    <h2
+      class="text-2xl font-serif font-bold text-gray-900 mb-6 border-b border-gray-200 pb-2"
+    >
+      Comments
+    </h2>
+
+    <!-- Comment Form -->
+    {% if user.is_authenticated %}
+    <form method="POST"  class="mb-8 bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">
+      {% csrf_token %}
+      <div class="mb-6">
+        <label
+          for="{{ comment_form.comment.id_for_label }}"
+          class="block text-gray-700 text-sm font-semibold mb-2 font-serif"
+        >
+          Share Your Thoughts
+        </label>
+        <textarea
+          id="{{ comment_form.comment.id_for_label }}"
+          name="{{ comment_form.comment.name }}"
+          class="w-full px-4 py-2 text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y"
+          rows="4"
+          placeholder="Write your comment here..."
+          required
+        >{{ comment_form.comment.value|default_if_none:"" }}</textarea>
+        {% if comment_form.comment.errors %}
+        <p class="text-red-600 text-sm mt-2 font-medium">
+          {{ comment_form.comment.errors.as_text }}
+        </p>
+        {% endif %}
+      </div>
+      <div class="flex justify-end">
+        <button
+          type="submit"
+          class="bg-blue-600 text-white px-5 py-2.5 rounded-md hover:bg-blue-700 transition-colors font-semibold text-sm font-serif"
+        >
+          Post Comment
+        </button>
+      </div>
+    </form>
+    {% else %}
+    <p class="text-gray-600 text-sm mb-4 font-serif">
+      <a
+        href="{% url 'login' %}?next={{ request.path }}"
+        class="text-blue-600 hover:text-blue-700 font-medium"
+      >
+        Log in
+      </a>
+      to share your thoughts.
+    </p>
+    {% endif %}
+
+    <!-- Comments List -->
+    {% if comments %}
+    <div class="space-y-6">
+      {% for comment in comments %}
+      <div class="border-b border-gray-200 pb-4">
+        <div class="flex items-center mb-2">
+          <span class="text-gray-900 font-semibold text-sm font-serif">
+            {% if comment.user.first_name or comment.user.last_name %}
+              {{ comment.user.first_name }} {{ comment.user.last_name }}
+            {% else %}
+              Anonymous
+            {% endif %}
+          </span>
+          <span class="text-gray-500 text-xs ml-2 font-sans">
+            {{ comment.created_at|date:"F d, Y" }}
+          </span>
+        </div>
+        <p class="text-gray-600 text-sm leading-relaxed font-sans">
+          {{ comment.comment }}
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-gray-600 text-sm font-serif">No comments yet. Be the first to share your thoughts!</p>
+    {% endif %}
+  </section>
+
+  <!-- Related Articles -->
+  <section>
+    <h2
+      class="text-2xl font-serif font-bold text-gray-900 mb-6 border-b border-gray-200 pb-2"
+    >
+      Related Articles
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for related_post in related_posts %}
+      <article>
+        <a href="{% url 'blog_post' related_post.slug %}">
+          {% if related_post.featured_image %}
+          <img
+            src="{{ related_post.featured_image.url }}"
+            alt="{{ related_post.title }}"
+            class="w-full h-40 object-cover mb-3"
+          />
+          {% else %}
+          <img
+            src="https://source.unsplash.com/random/400x300/?{{ related_post.category.name|slugify }}"
+            alt="{{ related_post.title }}"
+            class="w-full h-40 object-cover mb-3"
+          />
+          {% endif %}
+        </a>
+        <span class="text-gray-500 text-xs uppercase tracking-wide">
+          {{ related_post.created_at|date:"F d, Y" }}
+        </span>
+        <h3
+          class="text-lg font-serif font-bold text-gray-900 mb-2 leading-snug"
+        >
+          <a
+            href="{% url 'blog_post' related_post.slug %}"
+            class="hover:Text-blue-700"
+          >
+            {{ related_post.title }}
+          </a>
+        </h3>
+        <p class="text-gray-600 text-sm line-clamp-2">
+          {{ related_post.excerpt }}
+        </p>
+      </article>
+      {% empty %}
+      <p class="text-gray-600 text-sm">No related articles available.</p>
+      {% endfor %}
+    </div>
+  </section>
+</main>
+{% endblock %}

@@ -1,0 +1,152 @@
+{% extends "base.html" %} {% block content %}
+<main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
+  <!-- Category Header -->
+  <section class="mb-12">
+    <div
+      class="flex justify-between items-center mb-6 border-b border-gray-200 pb-2"
+    >
+      <h1 class="text-3xl font-serif font-bold text-gray-900">
+        {{ category.name }}
+      </h1>
+      <a href="#" class="text-blue-700 hover:text-blue-900 text-sm font-medium"
+        >View All {{ category.name }}</a
+      >
+    </div>
+
+    <!-- Featured Latest Post (Large Format) -->
+    {% if latest_featured %}
+    <article class="mb-12 border-b border-gray-200 pb-8">
+      <a href="{% url 'blog_post' latest_featured.slug %}">
+        {% if latest_featured.featured_image %}
+        <img
+          src="{{ latest_featured.featured_image.url }}"
+          alt="{{ latest_featured.title }}"
+          class="w-full h-80 object-cover mb-4"
+        />
+        {% else %}
+        <img
+          src="https://source.unsplash.com/random/1200x600/?{{ category.name|lower }}"
+          alt="{{ latest_featured.title }}"
+          class="w-full h-80 object-cover mb-4"
+        />
+        {% endif %}
+      </a>
+      <div class="flex items-center mb-3 space-x-3">
+        <span class="text-gray-500 text-xs uppercase tracking-wide"
+          >{{ latest_featured.created_at|date:"M d, Y" }}</span
+        >
+      </div>
+      <h2
+        class="text-3xl font-serif font-bold text-gray-900 mb-3 leading-tight"
+      >
+        <a
+          href="{% url 'blog_post' latest_featured.slug %}"
+          class="hover:text-blue-700"
+          >{{ latest_featured.title }}</a
+        >
+      </h2>
+      <p class="text-gray-600 text-base mb-4 leading-relaxed">
+        {{ latest_featured.excerpt }}
+      </p>
+      <div class="flex items-center text-gray-500 text-sm">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4 mr-1"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+          />
+        </svg>
+        <span>{{ latest_featured.views_count }} views</span>
+      </div>
+    </article>
+    {% endif %}
+
+    <!-- Other Posts (Grid Layout) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for post in posts %}
+      <article>
+        <a href="{% url 'blog_post' post.slug %}">
+          {% if post.featured_image %}
+          <img
+            src="{{ post.featured_image.url }}"
+            alt="{{ post.title }}"
+            class="w-full h-48 object-cover mb-3"
+          />
+          {% else %}
+          <img
+            src="https://source.unsplash.com/random/400x300/?{{ category.name|lower }}"
+            alt="{{ post.title }}"
+            class="w-full h-48 object-cover mb-3"
+          />
+          {% endif %}
+        </a>
+        <div class="flex items-center mb-2 space-x-2">
+          <span class="text-gray-500 text-xs uppercase tracking-wide"
+            >{{ post.created_at|date:"M d, Y" }}</span
+          >
+          <span class="text-gray-500 text-xs"
+            >{{ post.read_time }} min read</span
+          >
+        </div>
+        <h2
+          class="text-xl font-serif font-bold text-gray-900 mb-2 leading-snug"
+        >
+          <a href="{% url 'blog_post' post.slug %}" class="hover:text-blue-700"
+            >{{ post.title }}</a
+          >
+        </h2>
+        <p class="text-gray-600 text-sm line-clamp-2">{{ post.excerpt }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+
+{% if posts.has_other_pages %}
+<nav class="flex justify-center items-center space-x-2 mt-8">
+
+  {% if posts.has_previous %}
+    <a href="?page={{ posts.previous_page_number }}" class="text-gray-500 text-sm px-3 py-2 hover:text-blue-700">Previous</a>
+  {% else %}
+    <span class="text-gray-400 text-sm px-3 py-2 cursor-not-allowed">Previous</span>
+  {% endif %}
+
+  {% for i in posts.paginator.page_range %}
+    {% if i == posts.number %}
+      <a href="#" class="bg-blue-700 text-white text-sm px-3 py-2 rounded">{{ i }}</a>
+
+    {% elif i == 1 or i == posts.paginator.num_pages %}
+      <a href="?page={{ i }}" class="text-gray-500 text-sm px-3 py-2 hover:text-blue-700">{{ i }}</a>
+
+    {% elif i >= posts.number|add:"-2" and i <= posts.number|add:"2" %}
+      <a href="?page={{ i }}" class="text-gray-500 text-sm px-3 py-2 hover:text-blue-700">{{ i }}</a>
+
+    {% elif i == posts.number|add:"-3" or i == posts.number|add:"3" %}
+      <span class="text-gray-400 text-sm px-3 py-2">...</span>
+    {% endif %}
+  {% endfor %}
+
+  {% if posts.has_next %}
+    <a href="?page={{ posts.next_page_number }}" class="text-gray-500 text-sm px-3 py-2 hover:text-blue-700">Next</a>
+  {% else %}
+    <span class="text-gray-400 text-sm px-3 py-2 cursor-not-allowed">Next</span>
+  {% endif %}
+
+</nav>
+{% endif %}
+
+
+</main>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8 tracking-tight">
+      Search Results for "<span class="text-primary">{{ query }}</span>"
+    </h1>
+    {% if blogs %}
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for blog in blogs %}
+          <div class="border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-300 bg-white">
+            {% if blog.featured_image %}
+              <img 
+                src="{{ blog.featured_image.url }}" 
+                alt="{{ blog.title }}" 
+                class="w-full h-56 object-cover rounded-md mb-6"
+              >
+            {% endif %}
+            <h2 class="text-xl font-semibold text-gray-900 mb-3">
+              <a href="{% url 'blog_post' blog.slug %}" class="hover:text-primary transition-colors duration-200">
+                {{ blog.title }}
+              </a>
+            </h2>
+            <p class="text-gray-500 text-sm mb-3">
+              By {{ blog.author.first_name }} {{ blog.author.last_name }} | 
+              <span class="italic">{{ blog.created_at|date:"F d, Y" }}</span>
+            </p>
+            <p class="text-gray-600 text-base mb-4 line-clamp-3">
+              {{ blog.excerpt|truncatewords:30 }}
+            </p>
+            <p class="text-sm text-gray-400">
+              Category: <span class="font-medium text-gray-500">{{ blog.category.name }}</span>
+            </p>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-gray-500 text-lg text-center mt-8">
+        No blogs found matching your search. Try a different keyword.
+      </p>
+    {% endif %}
+  </div>
+{% endblock %}
